@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { readDeck, deleteCard } from "../../utils/api";
@@ -25,11 +26,11 @@ function DeckCards({ deck, setDeck, deckId }) {
   return (
     <div>
       <h1>Cards</h1>
-      <ul class="list-group">
+      <ul className="list-group">
         {deck.cards &&
           deck.cards.map((card, index) => {
             return (
-              <li key={index} class="list-group-item">
+              <li key={index} className="list-group-item">
                 <div className="row">
                   <div className="col-6 d-flex-wrap">{card.front}</div>
                   <div className="col-6 d-flex-wrap">{card.back}</div>

@@ -1,62 +1,63 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { deleteDeck, listDecks } from "../../utils/api/index";
+import { listDecks, deleteDeck } from "../../utils/api";
 
-function Decks() {
-  const [decks, setDecks] = useState([]);
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+function Decks({ decks, setDecks }) {
+  useEffect(loadDecks, []);
 
-    try {
-      listDecks(signal).then((data) => setDecks(data));
-    } catch (error) {
-      if (error.name === "AbortError") {
-        console.log("Aborted", decks);
-      } else {
-        throw error;
-      }
+  function loadDecks() {
+    listDecks().then(setDecks);
+  }
+
+  function deleteHandler(deckId) {
+    const comfirmed = window.confirm("Confirm Delete? test1");
+    if (comfirmed) {
+      deleteDeck(deckId).then(loadDecks);
     }
-  }, []);
+  }
 
   return (
     <section>
-      {decks.map((deck, index) => {
-        return (
-          <div key={index} className="card my-3">
-            <div className="card-body">
-              <h5 classname="card-title">
-                {deck.name}
-                <span className="float-right">{`${deck.cards.length} cards`}</span>{" "}
-              </h5>
-              <p className="card-text">{deck.description}</p>
-              <div>
-                <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
-                  View
-                </Link>
-                <Link
-                  to={`/decks/${deck.id}/study`}
-                  className="btn btn-primary mx-2"
-                >
-                  Study
-                </Link>
-                <span className="float-right">
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      window.confirm("Confirm Delete?")
-                        ? deleteDeck(deck.id)
-                        : null
-                    }
-                  >
-                    Delete
-                  </button>
-                </span>
+      {decks
+        ? decks.map((deck) => {
+            return (
+              <div key={deck.id} className="card my-3">
+                <div className="card-body">
+                  <h5 className="card-title">
+                    {deck.name}
+                    <span className="float-right">
+                      {deck.cards ? `${deck.cards.length} cards` : "No cards!"}
+                    </span>{" "}
+                  </h5>
+                  <p className="card-text">{deck.description}</p>
+                  <div>
+                    <Link
+                      to={`/decks/${deck.id}`}
+                      className="btn btn-secondary"
+                    >
+                      View
+                    </Link>
+                    <Link
+                      to={`/decks/${deck.id}/study`}
+                      className="btn btn-primary mx-2"
+                    >
+                      Study
+                    </Link>
+                    <span className="float-right">
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteHandler(deck.id)}
+                      >
+                        Delete
+                      </button>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        );
-      })}
+            );
+          })
+        : null}
     </section>
   );
 }

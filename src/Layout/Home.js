@@ -2,7 +2,7 @@ import React from "react";
 import Decks from "./ViewDeck/Decks";
 import { Link } from "react-router-dom";
 
-function Home() {
+function Home({ decks, setDecks }) {
   return (
     <div>
       <div>
@@ -11,7 +11,7 @@ function Home() {
         </Link>
       </div>
       <div>
-        <Decks />
+        <Decks decks={decks} setDecks={setDecks} />
       </div>
     </div>
   );

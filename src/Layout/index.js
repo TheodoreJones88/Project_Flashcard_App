@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import Home from "./Home";
 import DeckView from "./ViewDeck/DeckView";
@@ -8,6 +8,8 @@ import NotFound from "./NotFound";
 import Forms from "./Forms";
 
 function Layout() {
+  const [decks, setDecks] = useState([]);
+
   return (
     <Fragment>
       <Header />
@@ -15,19 +17,29 @@ function Layout() {
         {/* TODO: Implement the screen starting here */}
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home decks={decks} setDecks={setDecks} />
           </Route>
           <Route path="/decks/:deckId/study">
             <StudyDeck />
           </Route>
           <Route path="/decks/new">
-            <Forms newItem={true} isDeck={true} />
+            <Forms
+              decks={decks}
+              setDecks={setDecks}
+              newItem={true}
+              isDeck={true}
+            />
           </Route>
           <Route exact path="/decks/:deckId">
-            <DeckView />
+            <DeckView setDecks={setDecks} />
           </Route>
           <Route path="/decks/:deckId/edit">
-            <Forms newItem={false} isDeck={true} />
+            <Forms
+              decks={decks}
+              setDecks={setDecks}
+              newItem={false}
+              isDeck={true}
+            />
           </Route>
           <Route path="/decks/:deckId/cards/new">
             <Forms newItem={true} isDeck={false} />

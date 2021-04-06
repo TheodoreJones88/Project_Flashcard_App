@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { readDeck } from "../utils/api";
@@ -27,7 +28,7 @@ function StudyDeck() {
         throw error;
       }
     }
-  }, [deckId]);
+  }, []);
 
   return (
     <section className="container">

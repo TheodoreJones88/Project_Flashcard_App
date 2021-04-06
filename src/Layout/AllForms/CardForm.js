@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import AddEditNav from "./AddEditNav";
 import { readCard, readDeck, updateCard, createCard } from "../../utils/api";
@@ -33,8 +34,8 @@ function CardForm({
         }
       }
     }
-  }, [cardId]);
-  console.log(cardId);
+  }, []);
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -73,7 +74,6 @@ function CardForm({
     if (!newItem)
       card && setFormFields({ firstInput: card.front, secondInput: card.back });
   }, [card]);
-  console.log("card:", card);
 
   function submitHandler(event) {
     event.preventDefault();

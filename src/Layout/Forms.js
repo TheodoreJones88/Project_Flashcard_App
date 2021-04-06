@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router";
 import CardForm from "./AllForms/CardForm";
 import DeckForm from "./AllForms/DeckForm";
 
-function Forms({ isDeck, newItem }) {
+function Forms({ isDeck, newItem, decks, setDecks }) {
   const [deck, setDeck] = useState({ cards: [] });
   const [card, setCard] = useState();
   const { deckId, cardId } = useParams();
@@ -21,6 +21,8 @@ function Forms({ isDeck, newItem }) {
 
   return isDeck ? (
     <DeckForm
+      decks={decks}
+      setDecks={setDecks}
       isDeck={isDeck}
       deck={deck}
       card={card}

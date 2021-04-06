@@ -1,8 +1,24 @@
-import React, { useEffect } from "react";
-import { deleteDeck, readDeck } from "../../utils/api";
-import { Link } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { deleteDeck, listDecks } from "../../utils/api";
 
-function DeckTitle({ deck, setDeck, deckId }) {
+function DeckTitle({ deck, setDeck, setDecks, deckId }) {
+  const history = useHistory();
+
+  function loadDecks() {
+    listDecks().then(setDecks);
+  }
+
+  function handleDelete(deckId) {
+    const confirmed = window.confirm("Comfirm Delete?");
+    if (confirmed) {
+      deleteDeck(deckId)
+        .then(() => loadDecks())
+        .then(() => history.push("/"));
+    }
+  }
+
   return (
     <div className="card my-3">
       <div className="card-body">
@@ -22,9 +38,7 @@ function DeckTitle({ deck, setDeck, deckId }) {
             <Link
               to="/"
               className="btn btn-danger"
-              onClick={() =>
-                window.confirm("Confirm Delete?") ? deleteDeck(deck.id) : null
-              }
+              onClick={() => handleDelete(deck.id)}
             >
               Delete
             </Link>

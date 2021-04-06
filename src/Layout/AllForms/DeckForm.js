@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import AddEditNav from "./AddEditNav";
 import { readDeck, updateDeck, createDeck } from "../../utils/api";
 
 function DeckForm({
   isDeck,
+  decks,
+  setDecks,
   newItem,
   deck,
   setDeck,
@@ -15,7 +18,6 @@ function DeckForm({
   formNames,
   setFormNames,
 }) {
-  console.log(deckId);
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -32,8 +34,8 @@ function DeckForm({
         }
       }
     }
-  }, []);
-  console.log(deck);
+  }, [deckId]);
+
   useEffect(() => {
     newItem
       ? setFormNames({
@@ -57,13 +59,16 @@ function DeckForm({
         secondInput: deck.description,
       });
   }, [deck]);
-
+  const newDecks = [...decks];
   function submitHandler(event) {
     event.preventDefault();
     if (newItem) {
       createDeck({
         name: formFields.firstInput,
         description: formFields.secondInput,
+      }).then((res) => {
+        newDecks.push(res);
+        setDecks(() => newDecks);
       });
       history.push(`/`);
     } else {
